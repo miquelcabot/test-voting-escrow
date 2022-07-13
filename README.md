@@ -49,6 +49,11 @@ Test:
 brownie test
 ```
 
+Test evaluating gas usage and coverage:
+```bash
+brownie test --gas --coverage
+```
+
 List networks:
 ```bash
 brownie networks list
