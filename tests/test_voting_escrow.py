@@ -5,13 +5,9 @@ def test_deploy():
     token_name = 'Ocean token'
     token_symbol = 'OCEAN'
     token_decimals = 18
+    total_supply = 1_000_000
     version = '1.2'
 
-    erc20 = ERC20.deploy(token_name, token_symbol, token_decimals, 1_000_000, {'from': account})
+    erc20 = ERC20.deploy(token_name, token_symbol, token_decimals, total_supply, {'from': account})
 
-    voting_escrow = VotingEscrow.deploy(
-        erc20, token_name, token_symbol, version, {'from': account})
-
-    assert voting_escrow.name() == token_name
-    assert voting_escrow.symbol() == token_symbol
-    assert voting_escrow.version() == version
+    voting_escrow = VotingEscrow.deploy(erc20, {'from': account})

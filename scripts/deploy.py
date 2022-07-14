@@ -12,12 +12,9 @@ def deploy_voting_escrow():
 
     erc20 = ERC20.deploy('Ocean token', 'OCEAN', 18, 1_000_000, {'from': account})
 
-    voting_escrow = VotingEscrow.deploy(
-        erc20, 'Ocean', 'OCEAN', '1.2', {'from': account})
+    voting_escrow = VotingEscrow.deploy(erc20, {'from': account})
 
-    print(voting_escrow.name())
-    print(voting_escrow.symbol())
-    print(voting_escrow.version())
+    print(voting_escrow)
 
 def main():
     deploy_voting_escrow()
