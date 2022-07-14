@@ -58,12 +58,6 @@ INCREASE_LOCK_AMOUNT: constant(int128) = 2
 INCREASE_UNLOCK_TIME: constant(int128) = 3
 
 
-event CommitOwnership:
-    admin: address
-
-event ApplyOwnership:
-    admin: address
-
 event Deposit:
     provider: indexed(address)
     value: uint256
@@ -101,9 +95,6 @@ symbol: public(String[32])
 version: public(String[32])
 decimals: public(uint256)
 
-admin: public(address)  # Can and will be a smart contract
-future_admin: public(address)
-
 
 @external
 def __init__(token_addr: address, _name: String[64], _symbol: String[32], _version: String[32]):
@@ -114,7 +105,6 @@ def __init__(token_addr: address, _name: String[64], _symbol: String[32], _versi
     @param _symbol Token symbol
     @param _version Contract version - required for Aragon compatibility
     """
-    self.admin = msg.sender
     self.token = token_addr
     self.point_history[0].blk = block.number
     self.point_history[0].ts = block.timestamp
@@ -126,29 +116,6 @@ def __init__(token_addr: address, _name: String[64], _symbol: String[32], _versi
     self.name = _name
     self.symbol = _symbol
     self.version = _version
-
-
-@external
-def commit_transfer_ownership(addr: address):
-    """
-    @notice Transfer ownership of VotingEscrow contract to `addr`
-    @param addr Address to have ownership transferred to
-    """
-    assert msg.sender == self.admin  # dev: admin only
-    self.future_admin = addr
-    log CommitOwnership(addr)
-
-
-@external
-def apply_transfer_ownership():
-    """
-    @notice Apply ownership transfer
-    """
-    assert msg.sender == self.admin  # dev: admin only
-    _admin: address = self.future_admin
-    assert _admin != ZERO_ADDRESS  # dev: admin not set
-    self.admin = _admin
-    log ApplyOwnership(_admin)
 
 
 @external
