@@ -1,5 +1,5 @@
-# test-brownie
-Test brownie framework
+# test-voting-escrow
+Test VotingEscrow smart contract
 
 ## venv
 
