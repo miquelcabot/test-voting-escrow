@@ -101,11 +101,6 @@ symbol: public(String[32])
 version: public(String[32])
 decimals: public(uint256)
 
-# Checker for whitelisted (smart contract) wallets which are allowed to deposit
-# The goal is to prevent tokenizing the escrow
-future_smart_wallet_checker: public(address)
-smart_wallet_checker: public(address)
-
 admin: public(address)  # Can and will be a smart contract
 future_admin: public(address)
 
@@ -154,25 +149,6 @@ def apply_transfer_ownership():
     assert _admin != ZERO_ADDRESS  # dev: admin not set
     self.admin = _admin
     log ApplyOwnership(_admin)
-
-
-@external
-def commit_smart_wallet_checker(addr: address):
-    """
-    @notice Set an external contract to check for approved smart contract wallets
-    @param addr Address of Smart contract checker
-    """
-    assert msg.sender == self.admin
-    self.future_smart_wallet_checker = addr
-
-
-@external
-def apply_smart_wallet_checker():
-    """
-    @notice Apply setting external contract to check approved smart contract wallets
-    """
-    assert msg.sender == self.admin
-    self.smart_wallet_checker = self.future_smart_wallet_checker
 
 
 @external
