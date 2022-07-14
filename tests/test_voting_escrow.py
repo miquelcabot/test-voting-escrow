@@ -1,4 +1,4 @@
-from brownie import accounts, ERC20CRV, VotingEscrow
+from brownie import accounts, ERC20, VotingEscrow
 
 def test_deploy():
     account = accounts[0]
@@ -7,7 +7,7 @@ def test_deploy():
     token_decimals = 18
     version = '1.2'
 
-    erc20 = ERC20CRV.deploy(token_name, token_symbol, token_decimals, {'from': account})
+    erc20 = ERC20.deploy(token_name, token_symbol, token_decimals, 1_000_000, {'from': account})
 
     voting_escrow = VotingEscrow.deploy(
         erc20, token_name, token_symbol, version, {'from': account})
